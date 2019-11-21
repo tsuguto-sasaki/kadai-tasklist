@@ -3,9 +3,12 @@
     <li class="media mb-3">
       <img class="mr-2 rounded" src="<%= gravatar_url(task.user, { size: 50 }) %>" alt="">
       <div class="media-body">
-        
         <div>
-          <p><%= task.content %></p>
+          <p><%= task.status %></p>
+        </div>
+        <div>
+          <p><%= task.status %></p>
+          <p><%= link_to "詳細", task_path(task) %></p>
         </div>
       </div>
     </li>

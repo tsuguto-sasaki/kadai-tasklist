@@ -1,7 +1,8 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :require_user_logged_in, only: [:index, :show]
-  
+  before_action :my_task?, only: [:show, :edit, :update, :destroy]
+   
   def index
     if logged_in?
       @task = current_user.tasks.build  # form_with 用
@@ -53,7 +54,8 @@ class TasksController < ApplicationController
   private
   
   def set_task
-    @task = Task.find(params[:id])
+    @task = Task.find_by(id: params[:id])
+    redirect_to tasks_url unless @task
   end
   
   def task_params
@@ -65,6 +67,12 @@ class TasksController < ApplicationController
   def require_user_logged_in
     unless logged_in?
       redirect_to login_url
+    end
+  end
+  
+  def my_task?
+    unless session[:user_id] == @task.user_id
+      redirect_to tasks_url
     end
   end
 end
